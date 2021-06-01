@@ -1,0 +1,24 @@
+# harden the OS
+
+---
+
+- name: Harden all systems
+  hosts: all
+  become: yes
+  pre_tasks:
+    - name: Update OS
+      command: apt update -y
+
+    - name: Install Auditd
+      command: apt -y install auditd
+
+    - name: Start Auditd Service
+      ansible.builtin.systemd:
+        name: auditd
+        state: started
+
+    - name: Install Audispd-plugins
+      command: apt install -y audispd-plugins
+
+  roles:
+    - ansible-hardening
